@@ -16,7 +16,7 @@ train_x['Sex']=train_x['Sex'].astype('int')
 # train_x['Cabin']=train_x.Cabin.map(lambda x:str(x))
 
 #train_x=train_x.astype({"Sex":str,"Name":str,"Embarked":str,"Cabin":str})
-model= xgb.XGBClassifier(n_estimators=300,learning_rate=0.05)
+model= xgb.XGBClassifier(n_estimators=800,learning_rate=0.05)
 model.fit(X=train_x,y=train_y)
 
 test_x=pd.read_csv("./data/test.csv").drop(["PassengerId","Ticket",'Name','Cabin','Embarked'],axis=1)
@@ -28,12 +28,21 @@ print(y_predict)
 
 
 y_real=pd.read_csv("./data/gender_submission.csv")['Survived']
-print(y_real)
+
 
 #计算准确率
 def accuracy_rate(predict,real):
-    pass
+    s=predict-real
+    #s=s==0
+    num=0
+    for i in s:
+        if i==0:
+            num=num+1
+    #num = str(s).count('0')
+    total=len(real)
 
+    return  num/total
+print(accuracy_rate(y_predict,y_real))
 
 #计算f1-score
 def f1_score():
